@@ -52,7 +52,7 @@
                     "type": "string",
                     "required": true,
                     "minLength": 1,
-                    "maxLength": 10
+                    "maxLength": 100
                 }
             }
         },
@@ -81,7 +81,7 @@
                     "type": "string",
                     "required": true,
                     "minLength": 1,
-                    "maxLength": 10
+                    "maxLength": 100
                 }
             }
         },
