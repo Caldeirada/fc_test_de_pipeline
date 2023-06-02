@@ -1,10 +1,11 @@
 package kafka;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eventgenerator.EventGeneratorImpl;
+import lombok.NoArgsConstructor;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.json.simple.JSONObject;
 import properties.PropertiesHelper;
 import structures.InitEvent;
 
@@ -18,14 +19,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The object publishes methods that send messages that have random string
  * content onto the Kafka broker defined in {@link /src/resources/config.properties}
  */
+
 public class Producer extends AbstractKafka {
-
-
-    private KafkaProducer<String, String> kafkaProducer;
     private final AtomicBoolean closed = new AtomicBoolean(false);
-
-
-    //private final Logger log = Logger.getLogger(SimpleProducer.class.getName());
+    private KafkaProducer<String, String> kafkaProducer;
 
     /**
      * Instantiates a new Abstract class, SimpleKafka.
@@ -39,38 +36,15 @@ public class Producer extends AbstractKafka {
     }
 
 
-    /**
-     * This method sends a limited number of messages
-     * with random string data to the Kafka broker.
-     *
-     * This method is provided for testing purposes.
-     *
-     * @param topicName the name of the topic to where messages
-     *                  will be sent
-     * @param numberOfMessages the number of messages to send
-     * @throws Exception the exception that gets raised upon error
-     */
-    public void run(String topicName, int numberOfMessages) throws Exception {
-        int i = 0;
-        while (i <= numberOfMessages) {
-            String key = UUID.randomUUID().toString();
-            String message = MessageHelper.getRandomString();
-            this.send(topicName, key, message);
-            i++;
-            Thread.sleep(100);
-        }
-        this.shutdown();
-    }
+    //private final Logger log = Logger.getLogger(SimpleProducer.class.getName());
 
     /**
      * The runAlways method sends a message to a topic.
      *
-     * @param topicName    the name of topic to access
-     * @param callback the callback function that processes messages retrieved
-     *                 from Kafka
+     * @param topicName the name of topic to access
      * @throws Exception the Exception that will get thrown upon an error
      */
-    public void runAlways(String topicName, KafkaMessageHandler callback) throws Exception {
+    public void runAlways(String topicName) throws JsonProcessingException, InterruptedException {
         while (true) {
             String key = UUID.randomUUID().toString();
             //use the Message Helper to get a random string
@@ -79,19 +53,14 @@ public class Producer extends AbstractKafka {
             ObjectMapper mapper = new ObjectMapper();
             String initEventString = mapper.writeValueAsString(initEvent);
             //send the message
-            this.send(topicName, key, initEventString);
+            try {
+                send(topicName, key, initEventString);
+            } catch (Exception e) {
+                //log.error(exeption)
+            }
             Thread.sleep(1000);
         }
     }
-
-    private String topicName = null;
-    private void setTopicName(String topicName) {
-        this.topicName = topicName;
-    }
-    private String getTopicName() {
-        return this.topicName;
-    }
-
 
     /**
      * Does the work of sending a message to
@@ -105,16 +74,11 @@ public class Producer extends AbstractKafka {
      * @throws Exception the exception that gets thrown upon error
      */
     protected void send(String topicName, String key, String message) throws Exception {
-        String source = Producer.class.getName();
-
         //create the ProducerRecord object which will
         //represent the message to the Kafka broker.
         ProducerRecord<String, String> producerRecord =
                 new ProducerRecord<>(topicName, key, message);
 
-        //Use the helper to create an informative log entry in JSON format
-        JSONObject obj = MessageHelper.getMessageLogEntryJSON(source, topicName, key, message);
-        //log.info(obj.toJSONString());
         //Send the message to the Kafka broker using the internal
         //KafkaProducer
         getKafkaProducer().send(producerRecord);
