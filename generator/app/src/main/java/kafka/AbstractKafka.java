@@ -1,5 +1,7 @@
 package kafka;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 /**
  * The type Abstract class SimpleKafka
  */
@@ -42,10 +44,6 @@ public abstract class AbstractKafka {
      * broker
      *
      * @param topicName    the topicName to execute against
-     * @param callback a callback function to provide processing
-     *                 logic after a message is produced or after
-     *                 a message is consumed
-     * @throws Exception the exception that get thrown upon error
      */
-    public abstract void runAlways(String topicName, KafkaMessageHandler callback) throws Exception;
+    public abstract void runAlways(String topicName) throws JsonProcessingException, InterruptedException;
 }
