@@ -3,6 +3,9 @@
 
 ## High Level Design
 
+Airflow for orchestration.
+Dag to be instanced in separate Spark infrastucture
+
 ![hld](hld.drawio.png)
 
 
