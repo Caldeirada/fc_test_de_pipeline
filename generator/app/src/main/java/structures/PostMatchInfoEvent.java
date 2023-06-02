@@ -2,13 +2,11 @@ package structures;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-public class PostMatchInfo {
+public class PostMatchInfoEvent {
     @JsonProperty("coin-balance-after-match")
     private int coins;
     @JsonProperty("level-after-match")
