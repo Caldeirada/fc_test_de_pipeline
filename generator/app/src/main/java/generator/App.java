@@ -3,23 +3,36 @@
  */
 package generator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import eventSender.EventSender;
+import eventSender.EventSenderImpl;
+import eventgenerator.EventGenerator;
 import eventgenerator.EventGeneratorImpl;
+import kafka.KafkaProducer;
 import kafka.Producer;
-import structures.InitEvent;
+import properties.PropertiesHelper;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Properties;
 
 public class App {
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     public static void main(String[] args) throws Exception {
-        System.out.println(new App().getGreeting());
-        EventGeneratorImpl eventGenerator = new EventGeneratorImpl();
-        InitEvent initEvent = eventGenerator.generateInitEvent("2023-06-01");
-        ObjectMapper mapper = new ObjectMapper();
-        String initEventString = mapper.writeValueAsString(initEvent);
-        System.out.println(initEventString);
-        new Producer().runAlways("magic-topic");
+        Properties properties = PropertiesHelper.getProperties();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+        Timestamp ts = Timestamp.valueOf(LocalDateTime.parse(properties.getProperty("date.start"), formatter));
+
+        int timeAdvance = Integer.parseInt(properties.getProperty("time.advance"));
+        EventGenerator eventGenerator = new EventGeneratorImpl(ts, timeAdvance);
+
+        KafkaProducer kafkaProducer = new Producer(properties.getProperty("default.topic"));
+        EventSender eventSender = new EventSenderImpl(kafkaProducer, eventGenerator);
+
+        eventSender.startProcess();
     }
 
-    public String getGreeting() {
-        return "Hello World!";
-    }
 }

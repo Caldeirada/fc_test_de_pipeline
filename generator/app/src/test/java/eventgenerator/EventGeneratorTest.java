@@ -13,20 +13,28 @@ import structures.MatchEvent;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.junit.Assert.*;
 
 public class EventGeneratorTest {
-    public static final String INIT_JSON = "init.json";
-    public static final String MATCH_JSON = "match.json";
-    public static final String IAP_JSON = "in-app-purchase.json";
+    private static final String INIT_JSON = "init.json";
+    private static final String MATCH_JSON = "match.json";
+    private static final String IAP_JSON = "in-app-purchase.json";
+    private static final  String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final int timeAdvance = 36000;
 
     @Test
     public void gen_init_event_correct() {
-        EventGeneratorImpl eventGenerator = new EventGeneratorImpl();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+        Timestamp ts = Timestamp.valueOf(LocalDateTime.parse("2023-06-01 00:00:00", formatter));
+        EventGeneratorImpl eventGenerator = new EventGeneratorImpl(ts, timeAdvance);
 
-        InitEvent initEvent = eventGenerator.generateInitEvent("2023-06-02");
+        InitEvent initEvent = eventGenerator.generateInitEvent();
         assertNotNull(initEvent.getEvent_type());
         assertEquals(initEvent.getEvent_type(), "init");
         assertNotNull(initEvent.getCountry());
@@ -37,10 +45,14 @@ public class EventGeneratorTest {
 
     @Test
     public void gen_match_event_correct() {
-        EventGeneratorImpl eventGenerator = new EventGeneratorImpl();
-        InitEvent user_a = eventGenerator.generateInitEvent("2023-06-02");
-        InitEvent user_b = eventGenerator.generateInitEvent("2023-06-02");
-        MatchEvent matchEvent = eventGenerator.generateMatchEvent("2023-06-02", user_a, user_b);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+        Timestamp ts = Timestamp.valueOf(LocalDateTime.parse("2023-06-01 00:00:00", formatter));
+        EventGeneratorImpl eventGenerator = new EventGeneratorImpl(ts, timeAdvance);
+
+        InitEvent user_a = eventGenerator.generateInitEvent();
+        InitEvent user_b = eventGenerator.generateInitEvent();
+        MatchEvent matchEvent = eventGenerator.generateMatchEvent(user_a, user_b);
+
         assertNotNull(matchEvent.getEvent_type());
         assertEquals(matchEvent.getEvent_type(), "match");
         assertNotNull(matchEvent.getUser_a());
@@ -60,10 +72,13 @@ public class EventGeneratorTest {
 
     @Test
     public void gen_IAP_event_correct() {
-        EventGeneratorImpl eventGenerator = new EventGeneratorImpl();
-        InitEvent user = eventGenerator.generateInitEvent("2023-06-02");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT, Locale.getDefault());
+        Timestamp ts = Timestamp.valueOf(LocalDateTime.parse("2023-06-01 00:00:00", formatter));
+        EventGeneratorImpl eventGenerator = new EventGeneratorImpl(ts, timeAdvance);
 
-        InAppPurchase inAppPurchase = eventGenerator.generateIAPEvent("2023-06-02", user);
+        InitEvent user = eventGenerator.generateInitEvent();
+        InAppPurchase inAppPurchase = eventGenerator.generateIAPEvent(user);
+
         assertNotNull(inAppPurchase.getEvent_type());
         assertEquals(inAppPurchase.getEvent_type(), "in-app-purchase");
         assertNotNull(inAppPurchase.getUser_id());
