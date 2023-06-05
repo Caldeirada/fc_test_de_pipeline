@@ -19,7 +19,7 @@ public class PropertiesHelper {
      * @throws Exception Thrown if the file config.properties is not available
      *                   in the directory src/main/resources
      */
-    public static Properties getProperties() throws Exception {
+    public static Properties getProperties() {
 
         Properties props = null;
         //try to load the file config.properties
@@ -28,7 +28,7 @@ public class PropertiesHelper {
             props = new Properties();
 
             if (input == null) {
-                throw new Exception("Sorry, unable to find config.properties");
+                throw new RuntimeException("Sorry, unable to find config.properties");
             }
 
             //load a properties file from class path, inside static method

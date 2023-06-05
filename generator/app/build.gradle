@@ -33,6 +33,9 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.15.2'
     implementation group: 'net.datafaker', name: 'datafaker', version: '1.6.0'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.4.0'
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.20.0'
 }
 
 application {
