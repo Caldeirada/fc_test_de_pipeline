@@ -47,3 +47,41 @@ services:
       /usr/bin/mc mb myminio/gold;
       exit 0
       "
+
+  spark-master:
+    build: spark/.
+    ports:
+      - "9090:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_LOCAL_IP=spark-master
+      - SPARK_WORKLOAD=master
+    volumes:
+       - ./spark/apps:/opt/spark-apps
+       - ./spark/data:/opt/spark-data
+  
+  spark-worker-1:
+    build: spark/.
+    ports:
+      - "9091:8080"
+      - "7000:7000"
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_DRIVER_MEMORY=2G
+      - SPARK_EXECUTOR_MEMORY=2G
+      - SPARK_WORKLOAD=worker
+      - SPARK_LOCAL_IP=spark-worker-1
+    volumes:
+       - ./spark/apps:/opt/spark-apps
+       - ./spark/data:/opt/spark-data
+
+  #pyspark:
+  #  image: jupyter/pyspark-notebook:latest
+  #  hostname: pyspark
+  #  container_name: pyspark
+  #  ports:
+  #    - 8888:8888

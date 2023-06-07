@@ -1,0 +1,21 @@
+spark: bronze_extraction
+destination_format: json
+game: 8ballpool
+s3:
+  url: http://minio:9000
+  access_key: minioadmin #using default here since its local dev yaml
+  secret_key: minioadmin #using default here since its local dev yaml
+  base_bucket: bronze/
+kafka:
+  server: kafka:9092
+  topic: magic-topic
+events:
+  init:
+    prefix: init_
+    bucket: init
+  match:
+    prefix: match_
+    bucket: match
+  in-app-purchase:
+    prefix: in-app-purchase_
+    bucket: in-app-purchase
