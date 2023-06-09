@@ -1,0 +1,26 @@
+spark_name: Silver Init Task
+s3:
+ in_path: bronze/8ballpool/init/events
+ in_format: json
+ out_path: s3a://silver/8ballpool/init/events
+ out_checkpoint: s3a://silver/8ballpool/init/checkpoint
+ out_format: json
+schema:
+  event-type:
+    type: string
+  time:
+    type: long
+  user-id:
+    type: string
+  country:
+    type: string
+  platform:
+    type: string
+transformations:
+  uppercase_column:
+    args:
+      column_name: platform
+  get_country_name_from_country_code2:
+    args:
+      country_col: country
+    
