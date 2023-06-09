@@ -24,6 +24,7 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
 COPY jars.txt .
+
 COPY get-jars.sh .
 RUN sh get-jars.sh
 

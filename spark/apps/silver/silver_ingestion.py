@@ -14,9 +14,6 @@ from config.config import load_event_config, config_dict
 EVENT = sys.argv[1]
 event_config = load_event_config(EVENT)
 
-print(event_config)
-
-
 # using this function to abstract the streaming dataframe connection
 # easily changed to adaptad need requirments
 # for example reading json format requires schema, here we use kafka write schema we defined in bronze task
