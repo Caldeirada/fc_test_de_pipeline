@@ -1,0 +1,20 @@
+spark_name: Silver In App Purchase Task
+s3:
+ in_path: bronze/8ballpool/in-app-purchase/events
+ in_format: json
+ out_path: s3a://silver/8ballpool/in-app-purchase/events
+ out_checkpoint: s3a://silver/8ballpool/in-app-purchase/checkpoint
+ out_format: json
+schema:
+  event-type:
+    type: string
+  time:
+    type: long
+  purchase_value:
+    type: integer
+  user-id:
+    type: string
+  product-id:
+    type: string
+transformations:
+    

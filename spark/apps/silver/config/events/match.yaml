@@ -1,0 +1,39 @@
+spark_name: Silver Match Task
+s3:
+ in_path: bronze/8ballpool/match/events
+ in_format: json
+ out_path: s3a://silver/8ballpool/match/events
+ out_checkpoint: s3a://silver/8ballpool/match/checkpoint
+ out_format: json
+postmatch_info: &postmatch_info 
+  coin-balance-after-match:
+    type: integer
+  level-after-match:
+    type: integer
+  device:
+    type: string
+  platform:
+    type: string
+schema:
+  event-type:
+    type: string
+  time:
+    type: long
+  user-a:
+    type: string
+  user-b:
+    type: string
+  user-a-postmatch-info:
+    type: struct
+    struct: *postmatch_info 
+  user-b-postmatch-info:
+    type: struct
+    struct: *postmatch_info 
+  winner:
+    type: string
+  game-tier:
+    type: string
+  duration:
+    type: integer
+transformations:
+    
