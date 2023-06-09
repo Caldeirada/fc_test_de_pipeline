@@ -23,6 +23,10 @@ RUN wget --no-verbose -O apache-spark.tgz "https://archive.apache.org/dist/spark
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
+COPY jars.txt .
+COPY get-jars.sh .
+RUN sh get-jars.sh
+
 
 # Apache spark environment
 FROM builder as apache-spark
