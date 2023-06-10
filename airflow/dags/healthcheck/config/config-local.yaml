@@ -1,0 +1,5 @@
+dags:
+  - bronze_extraction_dag
+  - silver_transformation_dag_process_init
+  - silver_transformation_dag_process_match
+  - silver_transformation_dag_process_in-app-purchase
