@@ -8,7 +8,7 @@ s3:
   base_bucket: bronze/
 kafka:
   server: kafka:9092
-  topic: magic-topic
+  topic: 8ballpool-topic
 events:
   init:
     prefix: init_

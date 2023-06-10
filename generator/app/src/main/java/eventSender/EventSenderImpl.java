@@ -45,7 +45,7 @@ public class EventSenderImpl extends EventSender {
     public void startProcess() throws InterruptedException, JsonProcessingException {
         int chance;
         while (true) {
-             chance = rand.nextInt(101);
+            chance = rand.nextInt(101);
             //90% of the loops will create a new init event
             if (chance < 90) {
                 createAndPublishInitEvent();
@@ -74,27 +74,26 @@ public class EventSenderImpl extends EventSender {
     }
 
     private void createAndPublishInitEvent() throws JsonProcessingException {
-        String key = UUID.randomUUID().toString();
         InitEvent initEvent = eventGenerator.generateInitEvent();
+        String key = String.format("%s_%s", initEvent.getEvent_type(), UUID.randomUUID());
         initEventCache.put(key, initEvent);
         send(key, mapper.writeValueAsString(initEvent));
     }
 
     private void createAndPublishMatchEvent() throws JsonProcessingException {
-        String key = UUID.randomUUID().toString();
         InitEvent user_a = getCachedInitEvent();
         InitEvent user_b = getCachedInitEvent();
         if (!user_a.getUser_id().equals(user_b.getUser_id())) {
             MatchEvent matchEvent = eventGenerator.generateMatchEvent(user_a, user_b);
+            String key = String.format("%s_%s", matchEvent.getEvent_type(), UUID.randomUUID());
             send(key, mapper.writeValueAsString(matchEvent));
         }
     }
 
     private void createAndPublishIAPEvent() throws JsonProcessingException {
-        String key = UUID.randomUUID().toString();
         InitEvent user = getCachedInitEvent();
-
         InAppPurchase iapEvent = eventGenerator.generateIAPEvent(user);
+        String key = String.format("%s_%s", iapEvent.getEvent_type(), UUID.randomUUID());
         send(key, mapper.writeValueAsString(iapEvent));
     }
 
