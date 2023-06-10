@@ -16,11 +16,8 @@ with DAG(
     start_date=datetime(2023, 6, 2),
     tags=["bronze", "kafka", "consumer"],
 ) as dag:
-    tasks = []
     for pipeline in config_dict["spark"]:
-        tasks.append(
-            BashOperator(
-                task_id=pipeline,
-                bash_command=get_spark_tasks(config_dict["spark"][pipeline])
-            )
+        BashOperator(
+            task_id=pipeline,
+            bash_command=get_spark_tasks(config_dict["spark"][pipeline]),
         )
