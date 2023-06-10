@@ -4,4 +4,4 @@ venv/*
 buckets/*
 __pycache__
 airflow/dags/jars/*.jar
-airflow/dags/logs
+airflow/logs
