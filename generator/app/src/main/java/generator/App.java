@@ -9,6 +9,8 @@ import eventgenerator.EventGenerator;
 import eventgenerator.EventGeneratorImpl;
 import kafka.KafkaProducer;
 import kafka.Producer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import properties.PropertiesHelper;
 
 import java.sql.Timestamp;
@@ -18,7 +20,9 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class App {
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    private static final Logger log = LogManager.getLogger(App.class.getName());
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static void main(String[] args) throws Exception {
         Properties properties = PropertiesHelper.getProperties();
@@ -32,6 +36,7 @@ public class App {
         KafkaProducer kafkaProducer = new Producer(properties.getProperty("default.topic"));
         EventSender eventSender = new EventSenderImpl(kafkaProducer, eventGenerator);
 
+        log.info("Starting sending events");
         eventSender.startProcess();
     }
 

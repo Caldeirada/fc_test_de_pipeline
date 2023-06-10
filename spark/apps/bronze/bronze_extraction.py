@@ -1,4 +1,3 @@
-from pyspark.sql.types import StructType, IntegerType, StringType, DoubleType
 from pyspark.sql import SparkSession
 from pyspark.sql.streaming import DataStreamWriter
 from pyspark.sql.functions import col
