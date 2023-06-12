@@ -4,7 +4,7 @@ from airflow import DAG
 
 from airflow.operators.bash import BashOperator
 from spark_task_helper import get_spark_tasks
-from silver.config.config import config_dict
+from gold.config.config import config_dict
 
 
 """
