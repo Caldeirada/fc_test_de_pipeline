@@ -18,7 +18,7 @@ event_config = load_event_config(EVENT)
 # easily changed to adaptad need requirments
 # for example reading json format requires schema, here we use kafka write schema we defined in bronze task
 # {key: <str>, value: <json str>}
-def get_in_stream_bucket():
+def get_in_stream_bucket(spark):
     in_schema = (
         StructType().add("key", StringType(), True).add("value", StringType(), True)
     )
@@ -34,7 +34,7 @@ spark = SparkSession.builder.appName(event_config["spark_name"]).getOrCreate()
 
 set_s3_config(spark, config_dict["s3"])
 
-in_buckets_df = get_in_stream_bucket()
+in_buckets_df = get_in_stream_bucket(spark)
 
 in_buckets_df.printSchema()
 
@@ -59,7 +59,7 @@ out_df = in_process_df
 query = (
     out_df.writeStream.format(event_config["s3"]["out_format"])
     .outputMode("append")
-    .trigger(processingTime="10 seconds")
+    .trigger(processingTime="1 minute")
     .option("path", event_config["s3"]["out_path"])
     .option("checkpointLocation", event_config["s3"]["out_checkpoint"])
     .start()

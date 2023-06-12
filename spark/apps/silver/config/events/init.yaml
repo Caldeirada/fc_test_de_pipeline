@@ -23,4 +23,8 @@ transformations:
   get_country_name_from_country_code2:
     args:
       country_col: country
+  unixtimestamp_to_date:
+    args:
+      unix_ts_col: time
+      date_col: ref_date
     
