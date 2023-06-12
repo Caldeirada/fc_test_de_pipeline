@@ -1,0 +1,8 @@
+dags:
+  process_init:
+    spark:
+      master: spark://spark-master:7077
+      total-executor-cores: 1
+      executor-memory: 512M
+      jars: $(echo /opt/airflow/jars/*.jar | tr ' ' ',')
+      script: /opt/spark-apps/gold/gold_agreggation.py init

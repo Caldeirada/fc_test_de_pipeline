@@ -3,3 +3,4 @@ dags:
   - silver_transformation_dag_process_init
   - silver_transformation_dag_process_match
   - silver_transformation_dag_process_in-app-purchase
+  - gold_agreggation_dag_process_init
