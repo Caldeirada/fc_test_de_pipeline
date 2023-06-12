@@ -1,0 +1,22 @@
+spark_name: gold Init Task
+s3:
+ in_path: silver/8ballpool/init/events
+ in_format: json
+schema:
+  event-type:
+    type: string
+  time:
+    type: timestamp
+  user-id:
+    type: string
+  country_name:
+    type: string
+  platform:
+    type: string
+  ref_date:
+    type: string
+mysql:
+    database_url: jdbc:mysql://mysql:3306/local_env
+    table_name: daily_user_country_platform
+    username: root
+    password: secret
