@@ -18,4 +18,4 @@ Airflow is used to manage the streaming pipelines. Each one will have a long liv
 
 Airflow is avaialbe on localhost:8080
 
-To start the services use `docker-compose up --build -d`
+To start the services use `docker-compose up --build -d` ensure enough resources are provided to the docker service.
