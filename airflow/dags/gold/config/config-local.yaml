@@ -5,4 +5,4 @@ dags:
       total-executor-cores: 1
       executor-memory: 512M
       jars: $(echo /opt/airflow/jars/*.jar | tr ' ' ',')
-      script: /opt/spark-apps/gold/gold_agreggation.py init
+      script: /opt/spark-apps/gold/gold_aggregation.py init
