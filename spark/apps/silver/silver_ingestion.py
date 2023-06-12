@@ -36,9 +36,6 @@ set_s3_config(spark, config_dict["s3"])
 
 in_buckets_df = get_in_stream_bucket(spark)
 
-in_buckets_df.printSchema()
-
-
 # assuming every record in queue needs have the value column parsed
 def parse_json(df):
     schema = schema_event_parser(event_config["schema"])
