@@ -14,3 +14,8 @@ A datafaker is made available to test the pipeline features.
 - MinIO (local storage)
 
 MinIO is used as a bucket storage service, it provides direct connectivity with AWS S3 API and is a good candidate for local development
+Airflow is used to manage the streaming pipelines. Each one will have a long lived dag and a separate healthcheck task. On a fail the healthcheck will restart the streaming pipeline
+
+Airflow is avaialbe on localhost:8080
+
+To start the services use `docker-compose up --build -d`
